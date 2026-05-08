@@ -1,0 +1,87 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    @apply bg-slate-100 text-slate-950;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    min-height: 100vh;
+  }
+
+  .dark body {
+    @apply bg-space-950 text-slate-100;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl;
+  }
+
+  .dark .glass-card {
+    @apply bg-white/10 border-white/10;
+  }
+
+  .stat-chip {
+    @apply font-mono text-[10px] px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20;
+  }
+
+  .btn-primary {
+    @apply px-4 py-2 rounded-2xl bg-cyan-500 text-slate-950 font-display font-semibold text-sm
+      hover:bg-cyan-400 active:scale-95 transition-all duration-150;
+  }
+
+  .btn-ghost {
+    @apply px-4 py-2 rounded-2xl bg-white/5 text-slate-300 text-sm border border-white/10
+      hover:bg-white/10 active:scale-95 transition-all duration-150;
+  }
+}
+
+.leaflet-container {
+  background: #060d14 !important;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.leaflet-tile-pane {
+  filter: none;
+}
+
+.light .leaflet-tile-pane {
+  filter: none;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 1rem;
+}
