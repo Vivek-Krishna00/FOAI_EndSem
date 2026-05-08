@@ -2,8 +2,7 @@ import { useState, useCallback } from 'react';
 import axios from 'axios';
 import { getFromStorage, saveToStorage } from '../utils/storage';
 
-const API_KEY = import.meta.env.VITE_NEWS_API_KEY || '1a5b3bf9fee44df4a3240c0600d9322e';
-const BASE_URL = 'https://gnews.io/api/v4/top-headlines';
+const BASE_URL = '/api/gnews';
 const CATEGORIES = ['technology', 'science'];
 
 export function useNews() {
@@ -33,7 +32,6 @@ export function useNews() {
           topic: category === 'technology' ? 'technology' : 'science',
           lang: 'en',
           max: 5,
-          apikey: API_KEY,
         },
       });
       const fetched = response.data.articles || [];

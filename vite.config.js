@@ -20,6 +20,11 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
+      '/api/gnews': {
+        target: 'https://gnews.io',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/gnews/, '/api/v4/top-headlines'),
+      },
     },
   },
 });
