@@ -19,21 +19,36 @@ export function useISS() {
   const prevPositionRef = useRef(null);
   const prevTimeRef = useRef(null);
   const intervalRef = useRef(null);
+  const locationCacheRef = useRef({});
 
   const fetchLocation = useCallback(async (lat, lon) => {
+    const cacheKey = `${lat.toFixed(1)},${lon.toFixed(1)}`;
+    if (locationCacheRef.current[cacheKey]) {
+      setLocationName(locationCacheRef.current[cacheKey]);
+      return;
+    }
+
     try {
       const response = await axios.get(REVERSE_URL, {
         params: { lat, lon, format: 'json' },
       });
       const name = response.data?.display_name;
+      const fallback = 'Over the Ocean';
       if (name) {
         const parts = name.split(',');
-        setLocationName(parts.slice(-3).join(',').trim());
+        const trimmed = parts.slice(-3).join(',').trim();
+        locationCacheRef.current[cacheKey] = trimmed;
+        setLocationName(trimmed);
       } else {
-        setLocationName('Over the Ocean');
+        locationCacheRef.current[cacheKey] = fallback;
+        setLocationName(fallback);
       }
-    } catch {
+    } catch (err) {
+      locationCacheRef.current[cacheKey] = 'Over the Ocean';
       setLocationName('Over the Ocean');
+      if (err?.response?.status === 429) {
+        setError('Reverse geocoding rate limited. Location will update once allowed.');
+      }
     }
   }, []);
 
@@ -66,7 +81,8 @@ export function useISS() {
       setLoading(false);
       fetchLocation(lat, lon);
     } catch (err) {
-      setError('Unable to load ISS telemetry.');
+      const isRateLimit = err?.response?.status === 429;
+      setError(isRateLimit ? 'ISS telemetry rate limited. Please wait and refresh.' : 'Unable to load ISS telemetry.');
       setLoading(false);
     }
   }, [fetchLocation]);

@@ -68,6 +68,12 @@ export default function ISSTracker({ issData }) {
 
       <div className="grid gap-6 xl:grid-cols-[0.42fr_0.58fr]">
         <div className="space-y-5">
+          {error && (
+            <div className="glass-card p-4 border border-red-500/20 bg-red-500/5 text-red-200">
+              <p className="text-sm font-medium">ISS data warning:</p>
+              <p className="text-xs mt-1">{error}</p>
+            </div>
+          )}
           <div className="glass-card p-6 space-y-5">
             <div className="flex items-center justify-between gap-4">
               <div>
@@ -151,7 +157,9 @@ export default function ISSTracker({ issData }) {
               <MapUpdater position={position} />
             </MapContainer>
           ) : (
-            <div className="h-full flex items-center justify-center text-slate-500">Loading map...</div>
+            <div className="h-full flex items-center justify-center text-slate-400 px-6 text-center">
+              {loading ? 'Loading map...' : error ? `Unable to load map data. ${error}` : 'Waiting for ISS position...'}
+            </div>
           )}
         </div>
       </div>
